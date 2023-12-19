@@ -18,7 +18,7 @@ ELASTIC_HOST = os.environ.get("ELASTIC_HOST")
 # Create the client instance
 eclient = Elasticsearch(
     ELASTIC_HOST,
-    ca_certs="/escerts/certs/ca/ca.crt",
+    ca_certs="/escerts/ca/ca.crt",
     basic_auth=("elastic", ELASTIC_PASSWORD)
 )
 
@@ -28,6 +28,7 @@ cluster_health_metric = Gauge("elasticsearch_cluster_health", "Overall health st
 active_primary_shards_metric = Gauge("elasticsearch_active_primary_shards", "Number of active primary shards")
 active_shards_metric = Gauge("elasticsearch_active_shards", "Total number of active shards (primary and replica)")
 relocating_shards_metric = Gauge("elasticsearch_relocating_shards", "Number of shards currently relocating")
+number_of_nodes_metric = Gauge("elasticsearch_number_of_nodes", "Total Number of Nodes")
 
 def update_metrics():
     # Retrieve cluster health information
@@ -36,12 +37,14 @@ def update_metrics():
     active_primary_shards = cluster_health["active_primary_shards"]
     active_shards = cluster_health["active_shards"]
     relocating_shards = cluster_health["relocating_shards"]
+    number_of_nodes = cluster_health["number_of_nodes"]
 
     # Update Prometheus metrics
     cluster_health_metric.set(0 if cluster_health["status"] == "green" else 1 if cluster_health["status"] == "yellow" else 2)
     active_primary_shards_metric.set(active_primary_shards)
     active_shards_metric.set(active_shards)
     relocating_shards_metric.set(relocating_shards)
+    number_of_nodes_metric.set(number_of_nodes)
 
 
 if __name__ == "__main__":

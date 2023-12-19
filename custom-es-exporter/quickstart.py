@@ -10,7 +10,7 @@ ELASTIC_HOST = os.environ.get("ELASTIC_HOST")
 # Create the client instance
 client = Elasticsearch(
     ELASTIC_HOST,
-    ca_certs="/escerts/certs/ca/ca.crt",
+    ca_certs="/escerts/ca/ca.crt",
     basic_auth=("elastic", ELASTIC_PASSWORD)
 )
 
