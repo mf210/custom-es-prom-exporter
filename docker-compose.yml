@@ -8,6 +8,8 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - custom-es-exporter
 
   grafana:
     container_name: grafana
@@ -20,6 +22,8 @@ services:
     volumes:
       - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
 
   custom-es-exporter:
     container_name: custom-es-exporter
@@ -33,6 +37,13 @@ services:
     volumes:
       - ./custom-exporter:/custom-exporter
       - certs:/escerts
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_healthy
+      es03:
+        condition: service_healthy
   
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
