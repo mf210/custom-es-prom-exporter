@@ -8,6 +8,6 @@ alerting:
 rule_files:
 
 scrape_configs:
-- job_name: elastic-custom-exporter
+- job_name: custom-elastic-exporter
   static_configs:
-  - targets: ["elastic-custom-exporter:8000"]
+  - targets: ["custom-es-exporter:8000"]
