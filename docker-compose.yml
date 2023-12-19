@@ -22,5 +22,15 @@ services:
       - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - grafana_data:/var/lib/grafana
 
+  custom-es-exporter:
+    container_name: custom-es-exporter
+    build: ./custom-es-exporter
+    # Specify which exporter you want to run like example-0.py.
+    command: python exporters/clusterhealth_exporter.py
+    ports:
+      - 8000:8000
+    volumes:
+      - ./custom-exporter:/custom-exporter
+
 volumes:
   grafana_data:
