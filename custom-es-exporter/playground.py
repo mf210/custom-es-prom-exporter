@@ -9,7 +9,7 @@ elastic_api_key = "TU5iOGdJd0JERzEyZUhBUVFqOU86dTFUcDRQODVRNmFSYkxwdmJSdHhhZw=="
 
 # Create the client instance
 eclient = Elasticsearch(
-    "https://localhost:9200",
+    "https://es01:9200",
     ca_certs="/escerts/certs/ca/ca.crt",
     api_key=elastic_api_key
 )
