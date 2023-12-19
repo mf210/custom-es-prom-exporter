@@ -29,14 +29,14 @@ services:
     container_name: custom-es-exporter
     build: ./custom-es-exporter
     # Specify which exporter you want to run like example.py.
-    command: python exporters/clusterhealth_exporter.py
+    command: python exporters/main.py
     environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - ELASTIC_HOST=https://es01:9200
     ports:
       - 8000:8000
     volumes:
-      - ./custom-exporter:/custom-exporter
+      - ./custom-es-exporter:/custom-es-exporter
       - certs:/escerts
     depends_on:
       es01:
