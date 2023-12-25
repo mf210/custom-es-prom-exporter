@@ -18,19 +18,41 @@ eclient = Elasticsearch(
 
 
 # Prometheus metrics
-cluster_health_metric = Gauge("elasticsearch_cluster_health", "Overall health status of the Elasticsearch cluster (0: green, 1: yellow, 2: red)")
-active_primary_shards_metric = Gauge("elasticsearch_active_primary_shards", "Number of active primary shards")
-active_shards_metric = Gauge("elasticsearch_active_shards", "Total number of active shards (primary and replica)")
-relocating_shards_metric = Gauge("elasticsearch_relocating_shards", "Number of shards currently relocating")
-number_of_nodes_metric = Gauge("elasticsearch_number_of_nodes", "Total Number of Nodes")
-active_shards_percent_as_number_metric = Gauge("elasticsearch_active_shards_percent_as_number", "Active shards percentage as a number")
+cluster_health_metric = Gauge(
+    "elasticsearch_cluster_health", 
+    "Overall health status of the Elasticsearch cluster (0: green, 1: yellow, 2: red)")
+active_primary_shards_metric = Gauge(
+    "elasticsearch_active_primary_shards", 
+    "Number of active primary shards")
+active_shards_metric = Gauge(
+    "elasticsearch_active_shards", 
+    "Total number of active shards (primary and replica)")
+relocating_shards_metric = Gauge(
+    "elasticsearch_relocating_shards",
+    "Number of shards currently relocating")
+number_of_nodes_metric = Gauge(
+    "elasticsearch_number_of_nodes",
+    "Total Number of Nodes")
+active_shards_percent_as_number_metric = Gauge(
+    "elasticsearch_active_shards_percent_as_number",
+    "Active shards percentage as a number")
 
-
-index_documents_metric = Gauge("elasticsearch_index_documents", "Number of documents in an index", labelnames=["index"])
-index_size_bytes_metric = Gauge("elasticsearch_index_size_bytes", "Size of an index in bytes", labelnames=["index"])
-index_search_query_total_metric = Gauge("elasticsearch_index_search_query_total", "Total number of search queries on an index", labelnames=["index"])
-index_search_query_time_seconds_metric = Gauge("elasticsearch_index_search_query_time_seconds", "Total time spent on search queries in seconds", labelnames=["index"])
-
+index_documents_metric = Gauge(
+    "elasticsearch_index_documents", 
+    "Number of documents in an index", 
+    labelnames=["index"])
+index_size_bytes_metric = Gauge(
+    "elasticsearch_index_size_bytes", 
+    "Size of an index in bytes", 
+    labelnames=["index"])
+index_search_query_total_metric = Gauge(
+    "elasticsearch_index_search_query_total", 
+    "Total number of search queries on an index", 
+    labelnames=["index"])
+index_search_query_time_seconds_metric = Gauge(
+    "elasticsearch_index_search_query_time_seconds", 
+    "Total time spent on search queries in seconds", 
+    labelnames=["index"])
 
 
 def update_metrics():
@@ -54,11 +76,14 @@ def update_metrics():
 
     # Update Prometheus metrics for each index
     for index_name, index_stats in indices_stats["indices"].items():
-        index_documents_metric.labels(index=index_name).set(index_stats["total"]["docs"]["count"])
-        index_size_bytes_metric.labels(index=index_name).set(index_stats["total"]["store"]["size_in_bytes"])
-        index_search_query_total_metric.labels(index=index_name).set(index_stats["total"]["search"]["query_total"])
-        index_search_query_time_seconds_metric.labels(index=index_name).set(index_stats["total"]["search"]["query_time_in_millis"] / 1000.0)
-
+        index_documents_metric.labels(index=index_name).set(
+            index_stats["total"]["docs"]["count"])
+        index_size_bytes_metric.labels(index=index_name).set(
+            index_stats["total"]["store"]["size_in_bytes"])
+        index_search_query_total_metric.labels(index=index_name).set(
+            index_stats["total"]["search"]["query_total"])
+        index_search_query_time_seconds_metric.labels(index=index_name).set(
+            index_stats["total"]["search"]["query_time_in_millis"] / 1000.0)
 
 if __name__ == "__main__":
     # Start the Prometheus metrics HTTP server on port 8000
